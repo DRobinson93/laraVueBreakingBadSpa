@@ -2,9 +2,20 @@
     <div class="characters">
         <div class="container">
             <div class="card">
-                <div class="card-body">
-                    <label for="searchTxt">Search:</label>
-                    <input id="searchTxt" v-model="searchTxt">
+                <div class="card-body m-1 row">
+                    <div class="col-6">
+                        <input id="searchTxt" v-model="searchTxt" class="form-control form-control-sm" placeholder="Search">
+                    </div>
+                    <div class="col-6 row">
+                        <div class="col-6">
+                            <input type="checkbox" id="breakingBadChecked" v-model="breakingBadChecked">
+                            <label for="breakingBadChecked">Breaking Bad</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="checkbox" id="BetterCallSaul" v-model="betterCallSaulChecked">
+                            <label for="BetterCallSaul">Better Call Saul</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,20 +42,28 @@
     export default {
         data: function(){
             return {
-                searchTxt:''
+                searchTxt:'',
+                breakingBadChecked:true,
+                betterCallSaulChecked:true,
             }
         },
         computed: {
             charactersFiltered: function(){
+                let chars = this.characters;
+                if(!this.betterCallSaulChecked){
+                    chars = this.$store.getters.getCharByCategory('Breaking Bad');
+                }else if(!this.breakingBadChecked){
+                    chars = this.$store.getters.getCharByCategory('Breaking Bad, Better Call Saul');
+                }
                 if(this.searchTxt === '')//only filter if search text exists
-                    return this.characters;
-                return this.characters.filter((char) => {
+                    return chars;
+                return chars.filter((char) => {
                     return char.name.toLowerCase().includes(this.searchTxt.toLowerCase());
                 });
             },
             characters: function(){
                 return this.$store.state.characters;
-            },
+            }
         }
     }
 </script>

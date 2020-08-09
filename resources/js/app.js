@@ -18,9 +18,9 @@ import Vue from 'vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // Install BootstrapVue
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin)
+Vue.use(IconsPlugin);
 
 import Vuex from 'vuex'
 
@@ -36,6 +36,10 @@ const store = new Vuex.Store({
                 return {};
             }
             return state.characters.find(char => parseInt(char.id) === parseInt(id))
+        },
+        getCharByCategory: (state) => (category) => {
+            if (!category) return state.characters;
+            return state.characters.filter(char => char.category === category)
         }
     },
     mutations: {
